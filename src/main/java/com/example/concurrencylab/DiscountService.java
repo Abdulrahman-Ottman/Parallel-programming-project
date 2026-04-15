@@ -10,12 +10,12 @@ public class DiscountService {
 
     private Set<String> users = new HashSet<>();
 
-    public String applyDiscount(String userId) {
+    public boolean applyDiscount(String userId) {
 
         if (currentUses < maxUses) {
 
             try {
-                Thread.sleep(300);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -23,10 +23,10 @@ public class DiscountService {
             currentUses++;
             users.add(userId);
 
-            return "Discount applied";
+            return true;
         }
 
-        return "Discount expired";
+        return false;
     }
 
     public int getCurrentUses() {
