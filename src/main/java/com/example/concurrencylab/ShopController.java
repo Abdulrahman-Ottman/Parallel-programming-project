@@ -32,42 +32,4 @@ public class ShopController {
         return orderService.buy(user, product, code);
     }
 
-    @PostMapping("/simulate")
-    public String simulate() {
-
-        ExecutorService executor = Executors.newFixedThreadPool(10);
-//        ExecutorService executor = Executors.newCachedThreadPool();
-
-        for (int i = 1; i <= 100; i++) {
-            String userId = "user" + i;
-            String productId = "product1";
-
-            executor.submit(() -> {
-                try {
-                    URL url = new URL(
-                            "http://localhost:8080/shop/buy?user="
-                                    + userId +
-                                    "&product=" + productId +
-                                    "&code=SAVE10"
-                    );
-
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("POST");
-
-                    int responseCode = conn.getResponseCode();
-
-                    System.out.println(userId + " -> " + responseCode);
-
-                    conn.disconnect();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-        }
-
-        executor.shutdown();
-
-        return "Simulation started";
-    }
 }
