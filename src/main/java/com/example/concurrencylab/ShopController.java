@@ -32,4 +32,23 @@ public class ShopController {
         return orderService.buy(user, product, code);
     }
 
+    @PostMapping("/buy/no-queue")
+    public String buyWithoutQueue(
+            @RequestParam String user,
+            @RequestParam String product,
+            @RequestParam(required = false) String code
+    ) {
+
+        return orderService.buyWithoutQueue(
+                user,
+                product,
+                code
+        );
+    }
+    @GetMapping("/tasks/executed")
+    public int tasksExecuted() {
+
+        return orderService.getExecutedTasks();
+    }
+
 }

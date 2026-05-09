@@ -13,9 +13,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 @SpringBootApplication
 public class ConcurrencylabApplication {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		SpringApplication.run(ConcurrencylabApplication.class, args);
+        Thread.sleep(3000);
         simulate();
+
 	}
     public static String simulate() {
 
@@ -29,12 +31,17 @@ public class ConcurrencylabApplication {
         ExecutorService executor = Executors.newFixedThreadPool(24);
 //        ExecutorService executor = Executors.newCachedThreadPool();
 
-        for (int i = 1; i <= 1000; i++) {
+        for (int i = 1; i <= 2; i++) {
             String userId = "user" + i;
 
             executor.submit(() -> {
                 try {
+//                 //buyWithQueue
                     URL url = new URL("http://localhost:8080/shop/buy?user=" + userId + "&product=product1&code=SAVE10");
+                    //buyWithOutQueue
+
+
+                  //  URL url = new URL("http://localhost:8080/shop/buy/no-queue?user=" + userId + "&product=product1&code=SAVE10");
 
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
@@ -55,11 +62,13 @@ public class ConcurrencylabApplication {
             });
         }
 
+
+        
         executor.shutdown();
         try {
             executor.awaitTermination(10, TimeUnit.MINUTES);
         }catch (Exception e){
-
+            Thread.currentThread().interrupt();
         }
 
 
