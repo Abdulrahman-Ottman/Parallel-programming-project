@@ -1,16 +1,19 @@
-package com.example.concurrencylab;
+package com.example.concurrencylab.service;
+
+import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Service
  public class DiscountService {
 
     private int maxUses = 20;
     private int currentUses = 0;
 
-    private Set<String> users = new HashSet<>();
+    private Set<Long> users = new HashSet<>();
 
-    public synchronized boolean applyDiscount(String userId) {
+    public synchronized boolean applyDiscount(Long userId) {
 
         if (currentUses < maxUses) {
 
@@ -33,7 +36,7 @@ import java.util.Set;
         return currentUses;
     }
 
-    public Set<String> getUsers() {
+    public Set<Long> getUsers() {
         return users;
     }
 }
