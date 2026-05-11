@@ -2,9 +2,9 @@ package com.example.concurrencylab;
 
 public class SendEmailTask implements Runnable {
 
-    private final String userId;
+    private final Long userId;
 
-    public SendEmailTask(String userId) {
+    public SendEmailTask(Long userId) {
         this.userId = userId;
     }
 

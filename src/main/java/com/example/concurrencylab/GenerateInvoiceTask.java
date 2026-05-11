@@ -2,12 +2,12 @@ package com.example.concurrencylab;
 
 public class GenerateInvoiceTask implements Runnable {
 
-    private final String userId;
-    private final String productId;
+    private final Long userId;
+    private final Long productId;
 
     public GenerateInvoiceTask(
-            String userId,
-            String productId
+            Long userId,
+            Long productId
     ) {
         this.userId = userId;
         this.productId = productId;

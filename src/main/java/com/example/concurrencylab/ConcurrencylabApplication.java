@@ -127,7 +127,7 @@ public class ConcurrencylabApplication {
                                      AtomicInteger success,
                                      AtomicInteger fail) {
 
-        int numberOfUsers = 70;
+        int numberOfUsers = 3;
         int ordersPerUser = 2;
 
         List<Future<?>> futures = new ArrayList<>();

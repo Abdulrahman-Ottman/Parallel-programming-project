@@ -14,10 +14,7 @@ public class ShopController {
     public ShopController(OrderService orderService) {
         this.orderService = orderService;
     }
-    @GetMapping("/orders")
-    public Object getOrders() {
-        return orderService.getOrders();
-    }
+
 
     @GetMapping("/discount/count")
     public int count() {
@@ -34,5 +31,23 @@ public class ShopController {
     ) {
         return orderService.buy(userId, productId, code , discountValue);
     }
+
+    @PostMapping("/buy/no-queue")
+    public Order buyWithoutQueue(
+            @RequestParam Long userId,
+            @RequestParam Long productId,
+            @RequestParam(required = false) String code,
+            @RequestParam(required = false) double discountValue
+
+    ) {
+
+        return orderService.buyWithoutQueue(userId, productId, code , discountValue);
+    }
+    @GetMapping("/tasks/executed")
+    public int tasksExecuted() {
+
+        return orderService.getExecutedTasks();
+    }
+
 
 }
