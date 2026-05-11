@@ -31,17 +31,19 @@ public class ConcurrencylabApplication {
         ExecutorService executor = Executors.newFixedThreadPool(24);
 //        ExecutorService executor = Executors.newCachedThreadPool();
 
-        for (int i = 1; i <= 2; i++) {
+        for (int i = 1; i <= 10; i++) {
             String userId = "user" + i;
 
             executor.submit(() -> {
                 try {
+
+
 //                 //buyWithQueue
                     URL url = new URL("http://localhost:8080/shop/buy?user=" + userId + "&product=product1&code=SAVE10");
                     //buyWithOutQueue
 
 
-                  //  URL url = new URL("http://localhost:8080/shop/buy/no-queue?user=" + userId + "&product=product1&code=SAVE10");
+//                    URL url = new URL("http://localhost:8080/shop/buy/no-queue?user=" + userId + "&product=product1&code=SAVE10");
 
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
