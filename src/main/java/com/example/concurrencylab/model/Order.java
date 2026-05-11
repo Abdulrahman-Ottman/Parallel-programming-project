@@ -56,6 +56,10 @@ public class Order {
         this.discountValue = discountValue;
     }
 
+    public double getDiscountValue() {
+        return discountValue;
+    }
+
     public User getUser() {
         return user;
     }
