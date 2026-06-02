@@ -3,6 +3,7 @@ package com.example.concurrencylab.service;
 import com.example.concurrencylab.GenerateInvoiceTask;
 import com.example.concurrencylab.SendEmailTask;
 import com.example.concurrencylab.SendNotificationTask;
+import com.example.concurrencylab.aspect.TrackOrderLatency;
 import com.example.concurrencylab.model.Order;
 import com.example.concurrencylab.model.Product;
 import com.example.concurrencylab.model.User;
@@ -12,8 +13,6 @@ import com.example.concurrencylab.repository.UserRepository;
 import jakarta.annotation.PreDestroy;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -71,7 +70,7 @@ public class OrderService {
         }
 
     }
-
+    @TrackOrderLatency(scenario = "WITH_QUEUE")
     public Order buy(Long userId, Long productId, String discountCode , double discountValue) {
 
         boolean discountApplied = false;
@@ -136,7 +135,7 @@ public class OrderService {
 
         workers.shutdownNow();
     }
-
+    @TrackOrderLatency(scenario = "WITHOUT_QUEUE")
     public Order buyWithoutQueue(Long userId, Long productId, String discountCode , double discountValue) {
 
         boolean discountApplied = false;
