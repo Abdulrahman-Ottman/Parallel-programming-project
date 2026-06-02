@@ -1,0 +1,14 @@
+
+------------------------------
+Timestamp: 2026-05-12 13:34:15
+Scenario: WITHOUT BATCHING
+Orders Time: 12630 ms
+Report Time: 12456 ms
+------------------------------
+
+------------------------------
+Timestamp: 2026-05-12 13:34:16
+Scenario: WITH BATCHING
+Orders Time: 747 ms
+Report Time: 57 ms
+------------------------------
