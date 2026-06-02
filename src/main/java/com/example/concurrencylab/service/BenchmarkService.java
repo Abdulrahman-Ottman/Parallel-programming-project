@@ -96,8 +96,8 @@ public class BenchmarkService {
                                      AtomicInteger fail,boolean useQueue) {
 
 
-        int numberOfUsers = 3;
-        int ordersPerUser = 2;
+        int numberOfUsers = 10;
+        int ordersPerUser = 3;
 
         List<Future<?>> futures = new ArrayList<>();
 
