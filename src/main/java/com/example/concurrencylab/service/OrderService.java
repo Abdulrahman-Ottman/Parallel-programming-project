@@ -11,6 +11,7 @@ import com.example.concurrencylab.repository.OrderRepository;
 import com.example.concurrencylab.repository.ProductRepository;
 import com.example.concurrencylab.repository.UserRepository;
 import jakarta.annotation.PreDestroy;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.BlockingQueue;
@@ -70,6 +71,7 @@ public class OrderService {
         }
 
     }
+    @Transactional
     @TrackOrderLatency(scenario = "WITH_QUEUE")
     public Order buy(Long userId, Long productId, String discountCode , double discountValue) {
 
@@ -85,8 +87,7 @@ public class OrderService {
         }
 
         User user = userRepository.findById(userId).orElseThrow();
-        Product product = productRepository.findById(productId).orElseThrow();
-
+        Product product = productRepository.findByIdForUpdate(productId);
         if (product.getStock() <= 0) {
             throw new RuntimeException("Out of stock");
         }
