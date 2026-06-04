@@ -107,6 +107,45 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
+    public Order buyNoTransaction(Long userId, Long productId, String discountCode, double discountValue) {
+
+        boolean discountApplied = false;
+
+        if (discountCode != null && discountCode.equals("SAVE10")) {
+            discountApplied = discountService.applyDiscount(userId);
+        }
+
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        User user = userRepository.findById(userId).orElseThrow();
+        Product product = productRepository.findById(productId).orElseThrow();
+
+        if (product.getStock() <= 0) {
+            throw new RuntimeException("Out of stock");
+        }
+
+        product.setStock(product.getStock() - 1);
+        productRepository.save(product); // force DB write
+
+        if (true) {
+            throw new RuntimeException("simulated failure after stock update");
+        }
+
+        Order order = new Order();
+        order.setUser(user);
+        order.setProduct(product);
+        order.setDiscountApplied(discountApplied);
+
+        if (discountApplied) {
+            order.setDiscountValue(discountValue);
+        }
+
+        return orderRepository.save(order);
+    }
     private void pushBackgroundTasks(Long userId, Long productId) {
 
 
