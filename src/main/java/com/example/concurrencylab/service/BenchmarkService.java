@@ -162,4 +162,35 @@ public class BenchmarkService {
             long reportMs,
             long totalMs
     ) {}
+
+    public void benchmarkProductCache(long id) {
+
+        try {
+
+            for (int i = 0; i < 100; i++) {
+
+                URL url =
+                        new URL(
+                                "http://localhost:8080/products/" + id
+                        );
+
+                HttpURLConnection conn =
+                        (HttpURLConnection)
+                                url.openConnection();
+
+                conn.setRequestMethod("GET");
+
+                System.out.println(
+                        "Response Code = "
+                                + conn.getResponseCode()
+                );
+
+                conn.disconnect();
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+    }
 }
