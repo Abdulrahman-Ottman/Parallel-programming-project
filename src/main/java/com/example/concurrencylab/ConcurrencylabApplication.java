@@ -24,11 +24,13 @@ public class ConcurrencylabApplication {
     @Bean
     public CommandLineRunner run(UserRepository userRepository, OrderLatencyMetrics metrics) {
         return args -> {
-            benchmarkService.runScenario(userRepository, true, "WARMUP");
-            benchmarkService.runScenario(userRepository, false, "WITHOUT BATCHING");
-            benchmarkService.runScenario(userRepository, true, "WITH BATCHING");
-            metrics.printSummary();
+//            benchmarkService.runScenario(userRepository, true, "WARMUP");
+//            benchmarkService.runScenario(userRepository, false, "WITHOUT BATCHING");
+//            benchmarkService.runScenario(userRepository, true, "WITH BATCHING");
+//            metrics.printSummary();
 
+
+            benchmarkService.runTransactionalTest();
         };
     }
 }

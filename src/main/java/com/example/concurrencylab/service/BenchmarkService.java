@@ -162,4 +162,52 @@ public class BenchmarkService {
             long reportMs,
             long totalMs
     ) {}
+
+
+    public void runTransactionalTest() {
+
+        String[] endpoints = {
+                "/shop/buy",
+                "/shop/buy/no-transaction"
+        };
+
+        int requestsPerEndpoint = 10;
+
+        for (String endpoint : endpoints) {
+
+            System.out.println("=== Testing " + endpoint + " ===");
+
+            for (int i = 1; i <= requestsPerEndpoint; i++) {
+
+                try {
+                    long userId = ThreadLocalRandom.current().nextLong(1, 11);
+                    long productId = 1; // fixed for contention
+
+                    String urlStr = "http://localhost:8080" + endpoint +
+                            "?userId=" + userId +
+                            "&productId=" + productId +
+                            "&code=SAVE10" +
+                            "&discountValue=10";
+
+                    URL url = new URL(urlStr);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+
+                    int responseCode = conn.getResponseCode();
+
+                    System.out.println(
+                            endpoint + " | Request #" + i +
+                                    " → Response: " + responseCode
+                    );
+
+                    conn.disconnect();
+
+                } catch (Exception e) {
+                    System.out.println(endpoint + " | ERROR: " + e.getMessage());
+                }
+            }
+
+            System.out.println(); // spacing between endpoints
+        }
+    }
 }

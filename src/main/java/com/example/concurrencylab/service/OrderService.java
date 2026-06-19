@@ -93,7 +93,9 @@ public class OrderService {
         }
 
         product.setStock(product.getStock() - 1);
-
+        if (true) {
+            throw new RuntimeException("simulated failure after stock update");
+        }
         Order order = new Order();
         order.setUser(user);
         order.setProduct(product);
@@ -102,7 +104,7 @@ public class OrderService {
             order.setDiscountValue(discountValue);
         }
 
-        pushBackgroundTasks(userId, productId);
+//        pushBackgroundTasks(userId, productId);
 
         return orderRepository.save(order);
     }
@@ -131,9 +133,9 @@ public class OrderService {
         product.setStock(product.getStock() - 1);
         productRepository.save(product); // force DB write
 
-        if (true) {
-            throw new RuntimeException("simulated failure after stock update");
-        }
+//        if (true) {
+//            throw new RuntimeException("simulated failure after stock update");
+//        }
 
         Order order = new Order();
         order.setUser(user);
