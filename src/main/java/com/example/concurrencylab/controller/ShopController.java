@@ -40,8 +40,16 @@ public class ShopController {
             @RequestParam(required = false) double discountValue
 
     ) {
-
         return orderService.buyWithoutQueue(userId, productId, code , discountValue);
+    }
+    @PostMapping("/buy/no-transaction")
+    public Order buyNoTransaction(
+            @RequestParam Long userId,
+            @RequestParam Long productId,
+            @RequestParam(required = false) String code,
+            @RequestParam(required = false) double discountValue
+    ) {
+        return orderService.buyNoTransaction(userId, productId, code, discountValue);
     }
     @GetMapping("/tasks/executed")
     public int tasksExecuted() {
