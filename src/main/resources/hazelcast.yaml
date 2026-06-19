@@ -1,0 +1,6 @@
+hazelcast:
+  cluster-name: concurrencylab-cluster
+  map:
+    products:
+      time-to-live-seconds: 600
+      backup-count: 1

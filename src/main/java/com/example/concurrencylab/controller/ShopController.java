@@ -1,7 +1,9 @@
 package com.example.concurrencylab.controller;
 
 import com.example.concurrencylab.model.Order;
+import com.example.concurrencylab.model.Product;
 import com.example.concurrencylab.service.OrderService;
+import com.example.concurrencylab.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -56,6 +58,7 @@ public class ShopController {
 
         return orderService.getExecutedTasks();
     }
+
 
 
 }
