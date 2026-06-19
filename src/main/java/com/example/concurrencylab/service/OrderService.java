@@ -12,6 +12,7 @@ import com.example.concurrencylab.repository.ProductRepository;
 import com.example.concurrencylab.repository.UserRepository;
 import jakarta.annotation.PreDestroy;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.BlockingQueue;
@@ -26,20 +27,22 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+    @Autowired
+    private final ProductService productService ;
 
     private final DiscountService discountService = new DiscountService();
     private final BlockingQueue<Runnable> taskQueue = new LinkedBlockingQueue<>();
     private final AtomicInteger asyncTasksExecuted = new AtomicInteger();
     private final ExecutorService workers = Executors.newFixedThreadPool(3);
 
-
     public OrderService(OrderRepository orderRepository,
                         UserRepository userRepository,
-                        ProductRepository productRepository) {
+                        ProductRepository productRepository,ProductService productService) {
+
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
-
+        this.productService = productService;
         // تشغيل Workers بالخلفية
 
         for (int i = 1; i <= 3; i++) {
@@ -93,9 +96,11 @@ public class OrderService {
         }
 
         product.setStock(product.getStock() - 1);
-        if (true) {
-            throw new RuntimeException("simulated failure after stock update");
-        }
+        productService.updateCache(product);
+
+//        if (true) {
+//            throw new RuntimeException("simulated failure after stock update");
+//        }
         Order order = new Order();
         order.setUser(user);
         order.setProduct(product);
@@ -132,10 +137,11 @@ public class OrderService {
 
         product.setStock(product.getStock() - 1);
         productRepository.save(product); // force DB write
+        productService.updateCache(product);
 
-//        if (true) {
-//            throw new RuntimeException("simulated failure after stock update");
-//        }
+        if (true) {
+            throw new RuntimeException("simulated failure after stock update");
+        }
 
         Order order = new Order();
         order.setUser(user);

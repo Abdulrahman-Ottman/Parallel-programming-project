@@ -1,8 +1,4 @@
-Scenario: CACHE_HIT
-Calls: 99
-Average Latency: 0.0098 ms
---------------------
-Scenario: CACHE_MISS
-Calls: 2
-Average Latency: 19.8028 ms
+Scenario: WITH_QUEUE
+Calls: 10
+Average Latency: 149.4031 ms
 --------------------

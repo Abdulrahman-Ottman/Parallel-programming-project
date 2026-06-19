@@ -6,7 +6,6 @@ import com.example.concurrencylab.repository.ProductRepository;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -81,5 +80,11 @@ public class ProductService {
         return productId;
     }
 
+    public void updateCache(Product product){
+        productCache.put("product:"+product.getId() , product);
+    }
 
+    public Product getProductFromCache(int id){
+        return productCache.get("product:"+id);
+    }
 }

@@ -4,6 +4,7 @@ import com.example.concurrencylab.aspect.OrderLatencyMetrics;
 import com.example.concurrencylab.repository.UserRepository;
 import com.example.concurrencylab.service.BenchmarkService;
 import com.example.concurrencylab.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,9 +16,11 @@ import org.springframework.context.annotation.Bean;
 public class ConcurrencylabApplication {
 
     private final BenchmarkService benchmarkService;
-
-    public ConcurrencylabApplication(BenchmarkService benchmarkService) {
+    @Autowired
+    private final ProductService productService ;
+    public ConcurrencylabApplication(BenchmarkService benchmarkService , ProductService productService) {
         this.benchmarkService = benchmarkService;
+        this.productService = productService;
     }
 
     public static void main(String[] args) {
@@ -36,13 +39,16 @@ public class ConcurrencylabApplication {
 //            benchmarkService.runScenario(userRepository, true, "WARMUP");
 //            benchmarkService.runScenario(userRepository, false, "WITHOUT BATCHING");
 //            benchmarkService.runScenario(userRepository, true, "WITH BATCHING");
-           long id = productService.preloadMostSoldProduct();
+//           long id = productService.preloadMostSoldProduct();
+//
+//            benchmarkService.benchmarkProductCache(id);
+//            metrics.printSummary();
 
-            benchmarkService.benchmarkProductCache(id);
-            metrics.printSummary();
 
 
-//            benchmarkService.runTransactionalTest();
+
+            benchmarkService.runTransactionalTest();
+
         };
     }
 

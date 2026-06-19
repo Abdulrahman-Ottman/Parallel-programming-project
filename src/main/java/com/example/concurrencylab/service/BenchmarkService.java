@@ -241,4 +241,35 @@ public class BenchmarkService {
             System.out.println(); // spacing between endpoints
         }
     }
+
+    public void  runBottleNeckTest(int id){
+        for (int i = 1; i <= 100; i++) {
+
+            try {
+                long userId = ThreadLocalRandom.current().nextLong(1, 11);
+                long productId = id; // fixed for contention
+
+                String urlStr = "http://localhost:8080/buy"  +
+                        "?userId=" + userId +
+                        "&productId=" + productId +
+                        "&code=SAVE10" +
+                        "&discountValue=10";
+
+                URL url = new URL(urlStr);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+
+                int responseCode = conn.getResponseCode();
+
+
+
+                conn.disconnect();
+
+            } catch (Exception e) {
+                System.out.println( " | ERROR: " + e.getMessage());
+            }
+        }
+
+    }
+
 }
