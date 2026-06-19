@@ -16,4 +16,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
        ORDER BY COUNT(o.id) DESC
        """)
     List<Long> findMostRequestedProducts(Pageable pageable);
+
+
+    //these three lines are for Transaction Integrity (طلب 8)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT p FROM Product p WHERE p.id = :id")
+    Product findByIdForUpdate(Long id);
 }
