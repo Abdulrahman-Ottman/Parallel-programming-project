@@ -1,0 +1,70 @@
+
+------------------------------
+Timestamp: 2026-05-12 13:34:15
+Scenario: WITHOUT BATCHING
+Orders Time: 12630 ms
+Report Time: 12456 ms
+------------------------------
+
+------------------------------
+Timestamp: 2026-05-12 13:34:16
+Scenario: WITH BATCHING
+Orders Time: 747 ms
+Report Time: 57 ms
+------------------------------
+
+------------------------------
+Timestamp: 2026-06-19 10:22:21
+Scenario: WITHOUT BATCHING
+Orders Time: 144 ms
+Report Time: 6 ms
+------------------------------
+
+------------------------------
+Timestamp: 2026-06-19 10:22:22
+Scenario: WITH BATCHING
+Orders Time: 183 ms
+Report Time: 6 ms
+------------------------------
+
+------------------------------
+Timestamp: 2026-06-19 10:33:56
+Scenario: WITHOUT BATCHING
+Orders Time: 174 ms
+Report Time: 13 ms
+------------------------------
+
+------------------------------
+Timestamp: 2026-06-19 10:33:56
+Scenario: WITH BATCHING
+Orders Time: 216 ms
+Report Time: 20 ms
+------------------------------
+
+------------------------------
+Timestamp: 2026-06-19 10:45:57
+Scenario: WITHOUT BATCHING
+Orders Time: 4319 ms
+Report Time: 232 ms
+------------------------------
+
+------------------------------
+Timestamp: 2026-06-19 10:45:57
+Scenario: WITH BATCHING
+Orders Time: 171 ms
+Report Time: 17 ms
+------------------------------
+
+------------------------------
+Timestamp: 2026-06-20 14:55:34
+Scenario: WITHOUT BATCHING
+Orders Time: 8231 ms
+Report Time: 346 ms
+------------------------------
+
+------------------------------
+Timestamp: 2026-06-20 14:55:35
+Scenario: WITH BATCHING
+Orders Time: 268 ms
+Report Time: 25 ms
+------------------------------
