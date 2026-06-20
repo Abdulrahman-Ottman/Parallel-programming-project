@@ -1,0 +1,30 @@
+//the path of buy without queue
+        Request
+             ↓
+        Discount
+             ↓
+        DB Save
+             ↓
+        Generate Invoice
+             ↓
+        Send Email
+             ↓
+        Notification
+             ↓
+        Response
+
+//the path of buy with queue
+
+        Request
+             ↓
+        Discount
+             ↓
+        DB Save
+             ↓
+        Response
+
+    in parallel:
+
+        Generate Invoice
+        Send Email
+        Send Notification
