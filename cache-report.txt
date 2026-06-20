@@ -1,0 +1,4 @@
+Scenario: WITH_QUEUE
+Calls: 10
+Average Latency: 149.4031 ms
+--------------------

@@ -613,4 +613,15 @@ Timestamp: 2026-06-19 10:19:39
 Scenario: WITH BATCHING
 Orders Time: 198 ms
 Report Time: 27 ms
+Timestamp: 2026-06-04 12:05:41
+Scenario: WITHOUT BATCHING
+Orders Time: 12886 ms
+Report Time: 12610 ms
+------------------------------
+
+------------------------------
+Timestamp: 2026-06-04 12:05:42
+Scenario: WITH BATCHING
+Orders Time: 814 ms
+Report Time: 37 ms
 ------------------------------

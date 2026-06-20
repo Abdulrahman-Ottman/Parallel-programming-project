@@ -11,6 +11,8 @@ import com.example.concurrencylab.repository.OrderRepository;
 import com.example.concurrencylab.repository.ProductRepository;
 import com.example.concurrencylab.repository.UserRepository;
 import jakarta.annotation.PreDestroy;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.BlockingQueue;
@@ -25,20 +27,22 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+    @Autowired
+    private final ProductService productService ;
 
     private final DiscountService discountService = new DiscountService();
     private final BlockingQueue<Runnable> taskQueue = new LinkedBlockingQueue<>();
     private final AtomicInteger asyncTasksExecuted = new AtomicInteger();
     private final ExecutorService workers = Executors.newFixedThreadPool(3);
 
-
     public OrderService(OrderRepository orderRepository,
                         UserRepository userRepository,
-                        ProductRepository productRepository) {
+                        ProductRepository productRepository,ProductService productService) {
+
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
-
+        this.productService = productService;
         // تشغيل Workers بالخلفية
 
         for (int i = 1; i <= 3; i++) {
@@ -70,6 +74,7 @@ public class OrderService {
         }
 
     }
+    @Transactional
     @TrackOrderLatency(scenario = "WITH_QUEUE")
     public Order buy(Long userId, Long productId, String discountCode , double discountValue) {
 
@@ -85,14 +90,17 @@ public class OrderService {
         }
 
         User user = userRepository.findById(userId).orElseThrow();
-        Product product = productRepository.findById(productId).orElseThrow();
-
+        Product product = productRepository.findByIdForUpdate(productId);
         if (product.getStock() <= 0) {
             throw new RuntimeException("Out of stock");
         }
 
         product.setStock(product.getStock() - 1);
+        productService.updateCache(product);
 
+//        if (true) {
+//            throw new RuntimeException("simulated failure after stock update");
+//        }
         Order order = new Order();
         order.setUser(user);
         order.setProduct(product);
@@ -101,11 +109,51 @@ public class OrderService {
             order.setDiscountValue(discountValue);
         }
 
-        pushBackgroundTasks(userId, productId);
+//        pushBackgroundTasks(userId, productId);
 
         return orderRepository.save(order);
     }
 
+    public Order buyNoTransaction(Long userId, Long productId, String discountCode, double discountValue) {
+
+        boolean discountApplied = false;
+
+        if (discountCode != null && discountCode.equals("SAVE10")) {
+            discountApplied = discountService.applyDiscount(userId);
+        }
+
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        User user = userRepository.findById(userId).orElseThrow();
+        Product product = productRepository.findById(productId).orElseThrow();
+
+        if (product.getStock() <= 0) {
+            throw new RuntimeException("Out of stock");
+        }
+
+        product.setStock(product.getStock() - 1);
+        productRepository.save(product); // force DB write
+        productService.updateCache(product);
+
+        if (true) {
+            throw new RuntimeException("simulated failure after stock update");
+        }
+
+        Order order = new Order();
+        order.setUser(user);
+        order.setProduct(product);
+        order.setDiscountApplied(discountApplied);
+
+        if (discountApplied) {
+            order.setDiscountValue(discountValue);
+        }
+
+        return orderRepository.save(order);
+    }
     private void pushBackgroundTasks(Long userId, Long productId) {
 
 
