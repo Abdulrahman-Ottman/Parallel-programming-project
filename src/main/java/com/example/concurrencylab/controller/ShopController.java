@@ -28,7 +28,7 @@ public class ShopController {
             @RequestParam Long userId,
             @RequestParam Long productId,
             @RequestParam(required = false) String code,
-            @RequestParam(required = false) double discountValue
+            @RequestParam(required = false, defaultValue = "0.0") double discountValue
 
     ) {
         return orderService.buy(userId, productId, code , discountValue);
@@ -58,7 +58,10 @@ public class ShopController {
 
         return orderService.getExecutedTasks();
     }
-
+    @GetMapping("/health")
+    public String healthCheck() {
+        return "OK";
+    }
 
 
 }
